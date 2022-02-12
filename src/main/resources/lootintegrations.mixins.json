@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "package": "com.lootintegrations.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "lootintegrations.refmap.json",
+  "mixins": [
+    "LootTableLootIntegrations"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
