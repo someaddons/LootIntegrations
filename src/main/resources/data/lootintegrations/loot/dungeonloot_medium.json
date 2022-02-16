@@ -1,5 +1,5 @@
 {
-  "loot_table": "minecraft:chests/woodland_mansion",
+  "loot_table": "minecraft:chests/stronghold_crossing",
   "max_result_itemcount": 13,
   "integrated_loot_tables": {
     "dungeons_enhanced:castle_thron": 6,

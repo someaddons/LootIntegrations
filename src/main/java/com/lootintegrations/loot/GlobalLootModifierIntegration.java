@@ -34,6 +34,12 @@ public class GlobalLootModifierIntegration
         this.location = location;
     }
 
+    /**
+     * Applies the modifications to the loot list
+     *
+     * @param generatedLoot
+     * @param context
+     */
     @Nonnull
     public void doApply(final List<ItemStack> generatedLoot, final LootContext context)
     {
@@ -59,15 +65,25 @@ public class GlobalLootModifierIntegration
 
         for (int i = 0; i < itemCount; i++)
         {
-            final ItemStack stack = extraItems.get(LootintegrationsMod.rand.nextInt(extraItems.size()));
+            final ItemStack stack = extraItems.remove(LootintegrationsMod.rand.nextInt(extraItems.size()));
             generatedLoot.add(stack);
             if (LootintegrationsMod.config.getCommonConfig().debugOutput.get())
             {
                 LootintegrationsMod.LOGGER.info("Adding loot to:" + context.getQueriedLootTableId() + " item:" + stack.toString());
             }
+
+            if (extraItems.isEmpty())
+            {
+                break;
+            }
         }
     }
 
+    /**
+     * Aggregates the itemstacks in a list together, by item. May remove different variants of the same
+     * @param stacksIn
+     * @return
+     */
     private List<ItemStack> aggregateStacks(final List<ItemStack> stacksIn)
     {
         final Map<Item, ItemStack> aggregated = new HashMap<>();
@@ -90,6 +106,9 @@ public class GlobalLootModifierIntegration
         return new ArrayList<>(aggregated.values());
     }
 
+    /**
+     * Json ID names
+     */
     private static final String LOOT_TABLE_ID          = "loot_table";
     private static final String INTEGRATED_LOOT_TABLES = "integrated_loot_tables";
     private static final String MAX_RESULT_ITEMCOUNT   = "max_result_itemcount";
@@ -122,6 +141,14 @@ public class GlobalLootModifierIntegration
         return modifier;
     }
 
+    /**
+     * Compares two stacks ignoring count
+     * @param itemStack1
+     * @param itemStack2
+     * @param matchDamage
+     * @param matchNBT
+     * @return
+     */
     public static boolean compareItemStacksIgnoreStackSize(
       final ItemStack itemStack1,
       final ItemStack itemStack2,
@@ -148,11 +175,9 @@ public class GlobalLootModifierIntegration
         {
             if (!matchNBT)
             {
-                // Not comparing nbt
                 return true;
             }
 
-            // Then sort on NBT
             if (itemStack1.hasTag() && itemStack2.hasTag())
             {
                 CompoundNBT nbt1 = itemStack1.getTag();
