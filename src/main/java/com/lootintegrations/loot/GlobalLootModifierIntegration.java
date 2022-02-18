@@ -43,7 +43,16 @@ public class GlobalLootModifierIntegration
     @Nonnull
     public void doApply(final List<ItemStack> generatedLoot, final LootContext context)
     {
-        List<ItemStack> extraItems = ServerLifecycleHooks.getCurrentServer().getLootTables().get(lootTableId).getRandomItems(context);
+        List<ItemStack> extraItems;
+        try
+        {
+            extraItems = ServerLifecycleHooks.getCurrentServer().getLootTables().get(lootTableId).getRandomItems(context);
+        }
+        catch (Exception e)
+        {
+            LootintegrationsMod.LOGGER.debug("Loot generation for context failed for:" + lootTableId, e);
+            return;
+        }
 
         int itemCount = integratedTables.getOrDefault(context.getQueriedLootTableId(), 1);
         extraItems = aggregateStacks(extraItems);
