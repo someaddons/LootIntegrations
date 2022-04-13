@@ -4,19 +4,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.lootintegrations.LootintegrationsMod;
-import net.minecraft.client.resources.JsonReloadListener;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.profiler.IProfiler;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LootModifierManager extends JsonReloadListener
+public class LootModifierManager extends SimpleJsonResourceReloadListener
 {
     public static final  Map<ResourceLocation, List<GlobalLootModifierIntegration>> lootOptionsMap = new HashMap<>();
     private static final Gson                                                       GSON           = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -59,7 +59,7 @@ public class LootModifierManager extends JsonReloadListener
 
     @Override
     protected void apply(
-      final Map<ResourceLocation, JsonElement> resourceLocationJsonElementMap, final IResourceManager iResourceManager, final IProfiler iProfiler)
+      final Map<ResourceLocation, JsonElement> resourceLocationJsonElementMap, final ResourceManager iResourceManager, final ProfilerFiller iProfiler)
     {
         lootOptionsMap.clear();
         for (Map.Entry<ResourceLocation, JsonElement> entry : resourceLocationJsonElementMap.entrySet())

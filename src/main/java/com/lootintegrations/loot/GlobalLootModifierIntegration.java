@@ -3,12 +3,12 @@ package com.lootintegrations.loot;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lootintegrations.LootintegrationsMod;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.loot.LootContext;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -90,6 +90,7 @@ public class GlobalLootModifierIntegration
 
     /**
      * Aggregates the itemstacks in a list together, by item. May remove different variants of the same
+     *
      * @param stacksIn
      * @return
      */
@@ -152,6 +153,7 @@ public class GlobalLootModifierIntegration
 
     /**
      * Compares two stacks ignoring count
+     *
      * @param itemStack1
      * @param itemStack2
      * @param matchDamage
@@ -189,8 +191,8 @@ public class GlobalLootModifierIntegration
 
             if (itemStack1.hasTag() && itemStack2.hasTag())
             {
-                CompoundNBT nbt1 = itemStack1.getTag();
-                CompoundNBT nbt2 = itemStack2.getTag();
+                CompoundTag nbt1 = itemStack1.getTag();
+                CompoundTag nbt2 = itemStack2.getTag();
 
                 for (String key : nbt1.getAllKeys())
                 {
