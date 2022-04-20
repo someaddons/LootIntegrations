@@ -1,0 +1,16 @@
+{
+  "required": false,
+  "package": "com.lootintegrations.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "LootTableLootIntegrations",
+    "LootTableMixin",
+    "LoottablesLoadMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

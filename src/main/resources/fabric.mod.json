@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "lootintegrations",
+  "version": "${version}",
+
+  "name": "Loot integration Mod",
+  "description": "Integrates loot into loottables",
+  "authors": [
+    "Someaddons"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "ARR",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.lootintegrations.LootintegrationsMod"
+    ]
+  },
+  "mixins": [
+    "lootintegrations.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
