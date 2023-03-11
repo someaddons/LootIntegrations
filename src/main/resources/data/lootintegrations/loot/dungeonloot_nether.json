@@ -6,6 +6,14 @@
     "totw_additions:chests/nether_tower/nether_tower_chest": 6,
     "infernalexp:chests/desolate_bastion_outpost_chest": 9,
     "infernalexp:chests/glowstone_canyon_ruin_chest": 9,
-    "infernalexp:chests/basalt_delta_ruin_chest": 9
+    "infernalexp:chests/basalt_delta_ruin_chest": 9,
+    "bygonenether:chests/citadel": 6,
+    "bygonenether:chests/fortress": 6,
+    "bygonenether:chests/catacomb/treasure_rib": 6,
+    "awesomedungeonnether:chests/awesome_dungeon": 6,
+    "philipsruins:chests/nether_ruins_low": 4,
+    "infernalexp:chests/basalt_delta_ruin": 4,
+    "infernalexp:chests/desolate_bastion_outpost": 6,
+    "infernalexp:chests/glowstone_canyon_ruin": 4
   }
 }

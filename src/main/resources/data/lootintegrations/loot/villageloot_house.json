@@ -31,6 +31,10 @@
     "valhelsia_structures:chests/forge": 6,
     "valhelsia_structures:chests/witch_hut": 6,
     "stoneholm:bedroom": 6,
-    "stoneholm:armorer": 6
+    "stoneholm:armorer": 6,
+    "wythers:chests/village/badlands_ruins": 3,
+    "wythers:chests/village/forest_ruins_big_house": 3,
+    "wythers:chests/village/forest_ruins_butcher": 3,
+    "wythers:chests/village/forest_ruins_tannery": 3
   }
 }

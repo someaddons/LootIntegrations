@@ -1,5 +1,6 @@
 package com.lootintegrations;
 
+import com.lootintegrations.config.Configuration;
 import com.lootintegrations.loot.LootModifierManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -21,6 +22,7 @@ public class LootintegrationsMod implements ModInitializer
     public static final Logger                           LOGGER = LogManager.getLogger();
     public static       Random                           rand   = new Random();
     public static       Map<ResourceLocation, LootTable> tables = new HashMap<>();
+    public static       Configuration                    config = null;
 
     public LootintegrationsMod()
     {
@@ -30,6 +32,8 @@ public class LootintegrationsMod implements ModInitializer
     @Override
     public void onInitialize()
     {
+        config = new Configuration();
+        config.load();
         ResourceManagerHelper.get(SERVER_DATA).registerReloadListener(new LootModifierManager());
     }
 }

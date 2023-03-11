@@ -29,6 +29,8 @@
     "mostructures:jungle_temple_treasure": 3,
     "mostructures:pillager_treasure": 6,
     "graveyard:chests/totem_loot": 6,
+    "graveyard:chests/great_crypt_loot": 4,
+    "graveyard:chests/large_graveyard_loot": 4,
     "valhelsia_structures:chests/treasure": 6,
     "betterstrongholds:chests/trap": 6,
     "dungeoncrawl:chests/stage_4": 3,
@@ -37,6 +39,13 @@
     "dungeons_enhanced:large_dungeon_treasury": 6,
     "dungeons_enhanced:chests/monster_maze/treasure": 6,
     "dungeons_arise:chests/mines_treasure_big": 6,
-    "dungeons_arise:chests/scorched_mines/scorched_mines_treasure": 6
+    "dungeons_arise:chests/scorched_mines/scorched_mines_treasure": 6,
+    "philipsruins:chests/badlands_dungeon_loot_high": 6,
+    "philipsruins:chests/badlands_dungeon_loot_low": 3,
+    "philipsruins:chests/bone_dungeon_loot": 3,
+    "philipsruins:chests/level_three_ruins_loot": 4,
+    "philipsruins:chests/ruin_loot_value": 6,
+    "philipsruins:chests/sculk_dungeon_loot": 4,
+    "unstructured:chests/treasure_dungeon": 4
   }
 }

@@ -29,7 +29,6 @@ public class GlobalLootModifierIntegration
      */
     private GlobalLootModifierIntegration(final ResourceLocation location)
     {
-
         this.location = location;
     }
 
@@ -53,10 +52,20 @@ public class GlobalLootModifierIntegration
             return;
         }
 
+        if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+        {
+            LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + "from: " + lootTableId);
+        }
+
+        if (extraItems.isEmpty())
+        {
+            return;
+        }
+
         int itemCount = integratedTables.getOrDefault(((ILootTableID) lootTable).getID(), 1);
         extraItems = aggregateStacks(extraItems);
 
-        if ((generatedLoot.size() + itemCount) > fillSize)
+        if (!generatedLoot.isEmpty() && (generatedLoot.size() + itemCount) > fillSize)
         {
             List<ItemStack> newList = aggregateStacks(generatedLoot);
             generatedLoot.clear();
@@ -75,6 +84,10 @@ public class GlobalLootModifierIntegration
         {
             final ItemStack stack = extraItems.remove(LootintegrationsMod.rand.nextInt(extraItems.size()));
             generatedLoot.add(stack);
+            if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+            {
+                LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + " item:" + stack.toString());
+            }
 
             if (extraItems.isEmpty())
             {
@@ -128,6 +141,8 @@ public class GlobalLootModifierIntegration
         JsonObject jsonData = (JsonObject) data;
 
         modifier.lootTableId = new ResourceLocation(jsonData.get(LOOT_TABLE_ID).getAsString());
+
+        LootintegrationsMod.LOGGER.warn("Parsing loot modifiers for:" + location + " with loottable: " + modifier.lootTableId);
 
         if (jsonData.has(MAX_RESULT_ITEMCOUNT))
         {
