@@ -66,7 +66,6 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
         {
             if (!entry.getKey().getNamespace().equals(LootintegrationsMod.MODID))
             {
-                LootintegrationsMod.LOGGER.warn("Ignoring loot modifiers for:" + entry.getKey() + " use this folder name:" + LootintegrationsMod.MODID);
                 continue;
             }
 
