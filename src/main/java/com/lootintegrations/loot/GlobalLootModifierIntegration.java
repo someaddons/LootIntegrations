@@ -41,10 +41,10 @@ public class GlobalLootModifierIntegration
      */
     public void doApply(final List<ItemStack> generatedLoot, final LootContext context, final LootTable lootTable)
     {
-        List<ItemStack> extraItems;
+        List<ItemStack> extraItems = new ArrayList<>();
         try
         {
-            extraItems = LootintegrationsMod.tables.get(lootTableId).getRandomItems(context);
+            context.getLevel().getServer().getLootData().getLootTable(lootTableId).getRandomItems(context, extraItems::add);
         }
         catch (Exception e)
         {
