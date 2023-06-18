@@ -44,7 +44,7 @@ public class GlobalLootModifierIntegration
         List<ItemStack> extraItems = new ArrayList<>();
         try
         {
-            context.getLevel().getServer().getLootData().getLootTable(lootTableId).getRandomItems(context, extraItems::add);
+            extraItems = context.getLevel().getServer().getLootData().getLootTable(lootTableId).getRandomItems(context);
         }
         catch (Exception e)
         {
