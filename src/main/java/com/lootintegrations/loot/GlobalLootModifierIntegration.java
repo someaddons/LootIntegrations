@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -18,10 +17,10 @@ import java.util.Map;
 
 public class GlobalLootModifierIntegration
 {
-    private final ResourceLocation location;
-    public ResourceLocation lootTableId;
-    public Map<ResourceLocation, Integer> integratedTables = new HashMap<>();
-    private int fillSize = 27;
+    private final ResourceLocation               location;
+    public        ResourceLocation               lootTableId;
+    public        Map<ResourceLocation, Integer> integratedTables = new HashMap<>();
+    private       int                            fillSize         = 27;
 
     /**
      * Constructs a LootModifier.
@@ -45,7 +44,7 @@ public class GlobalLootModifierIntegration
         List<ItemStack> extraItems;
         try
         {
-            extraItems = ServerLifecycleHooks.getCurrentServer().getLootTables().get(lootTableId).getRandomItems(context);
+            extraItems = context.getLevel().getServer().getLootData().getLootTable(lootTableId).getRandomItems(context);
         }
         catch (Exception e)
         {
@@ -112,7 +111,8 @@ public class GlobalLootModifierIntegration
             if (contained == null)
             {
                 aggregated.put(stack.getItem(), stack);
-            } else
+            }
+            else
             {
                 if (compareItemStacksIgnoreStackSize(stack, contained, false, true))
                 {
@@ -127,9 +127,9 @@ public class GlobalLootModifierIntegration
     /**
      * Json ID names
      */
-    private static final String LOOT_TABLE_ID = "loot_table";
+    private static final String LOOT_TABLE_ID          = "loot_table";
     private static final String INTEGRATED_LOOT_TABLES = "integrated_loot_tables";
-    private static final String MAX_RESULT_ITEMCOUNT = "max_result_itemcount";
+    private static final String MAX_RESULT_ITEMCOUNT   = "max_result_itemcount";
 
     /**
      * Loads the loot modifiers from json
@@ -171,10 +171,10 @@ public class GlobalLootModifierIntegration
      * @return
      */
     public static boolean compareItemStacksIgnoreStackSize(
-            final ItemStack itemStack1,
-            final ItemStack itemStack2,
-            final boolean matchDamage,
-            final boolean matchNBT)
+      final ItemStack itemStack1,
+      final ItemStack itemStack2,
+      final boolean matchDamage,
+      final boolean matchNBT)
     {
         if (itemStack1.isEmpty() && itemStack2.isEmpty())
         {
@@ -182,7 +182,7 @@ public class GlobalLootModifierIntegration
         }
 
         if (itemStack1.isEmpty() && !itemStack2.isEmpty()
-                || !itemStack1.isEmpty() && itemStack2.isEmpty())
+              || !itemStack1.isEmpty() && itemStack2.isEmpty())
         {
             return false;
         }
@@ -217,10 +217,11 @@ public class GlobalLootModifierIntegration
                 }
 
                 return nbt1.getAllKeys().size() == nbt2.getAllKeys().size();
-            } else
+            }
+            else
             {
                 return (!itemStack1.hasTag() || itemStack1.getTag().isEmpty())
-                        && (!itemStack2.hasTag() || itemStack2.getTag().isEmpty());
+                         && (!itemStack2.hasTag() || itemStack2.getTag().isEmpty());
             }
         }
         return false;

@@ -31,7 +31,7 @@ public class EventHandler
             return;
         }
 
-        final BlockEntity te = event.getEntity().level.getBlockEntity(event.getPos());
+        final BlockEntity te = event.getEntity().level().getBlockEntity(event.getPos());
         if (te instanceof RandomizableContainerBlockEntity && ((RandomizableContainerBlockEntity) te).lootTable != null)
         {
             event.getEntity()
