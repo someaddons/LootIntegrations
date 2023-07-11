@@ -22,4 +22,6 @@ public class CommonConfiguration
         builder.pop();
         ForgeConfigSpecBuilder = builder.build();
     }
+
+    // TODO: Support wildcard/partial matches for loot table name
 }
