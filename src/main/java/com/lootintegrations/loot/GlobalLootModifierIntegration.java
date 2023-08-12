@@ -52,7 +52,7 @@ public class GlobalLootModifierIntegration
             return;
         }
 
-        if (LootintegrationsMod.config.getCommonConfig().debugOutput.get())
+        if (LootintegrationsMod.config.getCommonConfig().debugOutput)
         {
             LootintegrationsMod.LOGGER.info("Adding loot to: " + context.getQueriedLootTableId() + "from: " + lootTableId);
         }
@@ -84,7 +84,7 @@ public class GlobalLootModifierIntegration
         {
             final ItemStack stack = extraItems.remove(LootintegrationsMod.rand.nextInt(extraItems.size()));
             generatedLoot.add(stack);
-            if (LootintegrationsMod.config.getCommonConfig().debugOutput.get())
+            if (LootintegrationsMod.config.getCommonConfig().debugOutput)
             {
                 LootintegrationsMod.LOGGER.info("Adding loot to: " + context.getQueriedLootTableId() + " item:" + stack.toString());
             }
