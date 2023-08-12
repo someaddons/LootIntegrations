@@ -26,7 +26,7 @@ public class EventHandler
     @SubscribeEvent
     public static void playerClickBlockEvent(final PlayerInteractEvent.RightClickBlock event)
     {
-        if (!LootintegrationsMod.config.getCommonConfig().showcontainerloottable.get() || event.getLevel().isClientSide())
+        if (!LootintegrationsMod.config.getCommonConfig().showcontainerloottable || event.getLevel().isClientSide())
         {
             return;
         }

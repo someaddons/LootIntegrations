@@ -1,27 +1,38 @@
 package com.lootintegrations.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import com.cupboard.config.ICommonConfig;
+import com.google.gson.JsonObject;
 
-public class CommonConfiguration
+public class CommonConfiguration implements ICommonConfig
 {
-    public final ForgeConfigSpec                      ForgeConfigSpecBuilder;
-    public final ForgeConfigSpec.ConfigValue<Boolean> debugOutput;
-    public final ForgeConfigSpec.ConfigValue<Boolean> showcontainerloottable;
+    public boolean showcontainerloottable = false;
+    public boolean debugOutput            = false;
 
-    protected CommonConfiguration(final ForgeConfigSpec.Builder builder)
+    public CommonConfiguration()
     {
-        builder.push("Config category");
 
-        builder.comment("Prints the added loot to the log if enabled: default:false");
-        debugOutput = builder.define("debugOutput", false);
-
-        builder.comment("Set to true to print containers loottable on first open: default:false");
-        showcontainerloottable = builder.define("showcontainerloottable", false);
-
-        // Escapes the current category level
-        builder.pop();
-        ForgeConfigSpecBuilder = builder.build();
     }
 
-    // TODO: Support wildcard/partial matches for loot table name
+    public JsonObject serialize()
+    {
+        final JsonObject root = new JsonObject();
+
+        final JsonObject entry = new JsonObject();
+        entry.addProperty("desc:", "Set to true to print containers loottable on first open: default:false");
+        entry.addProperty("showcontainerloottable", showcontainerloottable);
+        root.add("showcontainerloottable", entry);
+
+        final JsonObject entry2 = new JsonObject();
+        entry2.addProperty("desc:", "Prints the added loot to the log if enabled: default:false");
+        entry2.addProperty("debugOutput", debugOutput);
+        root.add("debugOutput", entry2);
+
+        return root;
+    }
+
+    public void deserialize(JsonObject data)
+    {
+        showcontainerloottable = data.get("showcontainerloottable").getAsJsonObject().get("showcontainerloottable").getAsBoolean();
+        debugOutput = data.get("debugOutput").getAsJsonObject().get("debugOutput").getAsBoolean();
+    }
 }
