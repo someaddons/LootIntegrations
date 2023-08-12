@@ -25,10 +25,11 @@
   "mixins": [
     "lootintegrations.mixins.json"
   ],
-
+  "accessWidener": "lootintegrations.accessWidener",
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",
+    "cupboard": "*",
     "minecraft": "1.19.x",
     "java": ">=17"
   },
