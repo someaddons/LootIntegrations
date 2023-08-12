@@ -1,6 +1,7 @@
 package com.lootintegrations;
 
-import com.lootintegrations.config.Configuration;
+import com.cupboard.config.CupboardConfig;
+import com.lootintegrations.config.CommonConfiguration;
 import com.lootintegrations.loot.LootModifierManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -18,11 +19,11 @@ import static net.minecraft.server.packs.PackType.SERVER_DATA;
 // The value here should match an entry in the META-INF/mods.toml file
 public class LootintegrationsMod implements ModInitializer
 {
-    public static final String                           MODID  = "lootintegrations";
-    public static final Logger                           LOGGER = LogManager.getLogger();
-    public static       Random                           rand   = new Random();
-    public static       Map<ResourceLocation, LootTable> tables = new HashMap<>();
-    public static       Configuration                    config = null;
+    public static final String                              MODID  = "lootintegrations";
+    public static final Logger                              LOGGER = LogManager.getLogger();
+    public static       Random                              rand   = new Random();
+    public static       Map<ResourceLocation, LootTable>    tables = new HashMap<>();
+    public static       CupboardConfig<CommonConfiguration> config = new CupboardConfig<>(MODID, new CommonConfiguration());
 
     public LootintegrationsMod()
     {
@@ -32,8 +33,6 @@ public class LootintegrationsMod implements ModInitializer
     @Override
     public void onInitialize()
     {
-        config = new Configuration();
-        config.load();
         ResourceManagerHelper.get(SERVER_DATA).registerReloadListener(new LootModifierManager());
     }
 }

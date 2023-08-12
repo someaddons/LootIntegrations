@@ -1,13 +1,14 @@
 package com.lootintegrations.config;
 
+import com.cupboard.config.ICommonConfig;
 import com.google.gson.JsonObject;
 
-public class CommonConfiguration
+public class CommonConfiguration implements ICommonConfig
 {
     public boolean showcontainerloottable = false;
     public boolean debugOutput            = false;
 
-    protected CommonConfiguration()
+    public CommonConfiguration()
     {
 
     }
