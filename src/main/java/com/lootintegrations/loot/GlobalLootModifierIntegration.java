@@ -48,13 +48,13 @@ public class GlobalLootModifierIntegration
         }
         catch (Exception e)
         {
-            LootintegrationsMod.LOGGER.debug("Loot generation for context failed for:" + lootTableId, e);
+            LootintegrationsMod.LOGGER.debug("Loot generation of modifier:" + location + " for context failed for:" + lootTableId, e);
             return;
         }
 
         if (LootintegrationsMod.config.getCommonConfig().debugOutput)
         {
-            LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + "from: " + lootTableId);
+            LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + "from: " + lootTableId + " caused by:" + location);
         }
 
         if (extraItems.isEmpty())
