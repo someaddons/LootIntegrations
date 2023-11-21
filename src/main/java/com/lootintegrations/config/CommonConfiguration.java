@@ -18,12 +18,12 @@ public class CommonConfiguration implements ICommonConfig
         final JsonObject root = new JsonObject();
 
         final JsonObject entry = new JsonObject();
-        entry.addProperty("desc:", "Set to true to print containers loottable on first open: default:false");
+        entry.addProperty("desc:", "Set to true to show containers loottable on first open: default:false");
         entry.addProperty("showcontainerloottable", showcontainerloottable);
         root.add("showcontainerloottable", entry);
 
         final JsonObject entry2 = new JsonObject();
-        entry2.addProperty("desc:", "Prints the added loot to the log if enabled: default:false");
+        entry2.addProperty("desc:", "Shows the added loot in the log if enabled: default:false");
         entry2.addProperty("debugOutput", debugOutput);
         root.add("debugOutput", entry2);
 
