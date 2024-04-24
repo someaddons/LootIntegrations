@@ -1,10 +1,7 @@
 {
   "loot_table": "minecraft:chests/stronghold_crossing",
-  "max_result_itemcount": 13,
+  "max_result_itemcount": 12,
   "integrated_loot_tables": {
-    "dungeons_enhanced:castle_thron": 6,
-    "dungeons_enhanced:castle_library": 3,
-    "dungeons_enhanced:chests/tower_of_the_undead/treasure": 6,
     "dungeons_arise:chests/abandoned_temple/abandoned_temple_top": 3,
     "dungeons_arise:chests/bandit_towers/bandit_towers_treasure": 6,
     "dungeons_arise:chests/desert_city_big": 3,
@@ -34,10 +31,6 @@
     "valhelsia_structures:chests/treasure": 6,
     "betterstrongholds:chests/trap": 6,
     "dungeoncrawl:chests/stage_4": 3,
-    "dungeons_enhanced:desert_temple_treasure": 3,
-    "dungeons_enhanced:jungle_monument_treasure": 6,
-    "dungeons_enhanced:large_dungeon_treasury": 6,
-    "dungeons_enhanced:chests/monster_maze/treasure": 6,
     "dungeons_arise:chests/mines_treasure_big": 6,
     "dungeons_arise:chests/scorched_mines/scorched_mines_treasure": 6,
     "philipsruins:chests/badlands_dungeon_loot_high": 6,
