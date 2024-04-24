@@ -143,7 +143,7 @@ public class GlobalLootModifierIntegration
 
         modifier.lootTableId = new ResourceLocation(jsonData.get(LOOT_TABLE_ID).getAsString());
 
-        LootintegrationsMod.LOGGER.warn("Parsing loot modifiers for:" + location + " with loottable: " + modifier.lootTableId);
+        LootintegrationsMod.LOGGER.info("Parsing loot modifiers for:" + location + " with loottable: " + modifier.lootTableId);
 
         if (jsonData.has(MAX_RESULT_ITEMCOUNT))
         {
