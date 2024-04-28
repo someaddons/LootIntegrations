@@ -63,18 +63,21 @@ public class GlobalLootModifierIntegration
             }
         }
 
-        for (int i = 0; i < itemCount; i++)
+        if (!extraItems.isEmpty())
         {
-            final ItemStack stack = extraItems.remove(LootintegrationsMod.rand.nextInt(extraItems.size()));
-            generatedLoot.add(stack);
-            if (LootintegrationsMod.config.getCommonConfig().debugOutput.get())
+            for (int i = 0; i < itemCount; i++)
             {
-                LootintegrationsMod.LOGGER.info("Adding loot to:" + context.getQueriedLootTableId() + " item:" + stack.toString());
-            }
+                final ItemStack stack = extraItems.remove(LootintegrationsMod.rand.nextInt(extraItems.size()));
+                generatedLoot.add(stack);
+                if (LootintegrationsMod.config.getCommonConfig().debugOutput.get())
+                {
+                    LootintegrationsMod.LOGGER.info("Adding loot to:" + context.getQueriedLootTableId() + " item:" + stack.toString());
+                }
 
-            if (extraItems.isEmpty())
-            {
-                break;
+                if (extraItems.isEmpty())
+                {
+                    break;
+                }
             }
         }
     }
