@@ -1,5 +1,5 @@
 {
-  "loot_table": "minecraft:chests/village/village_plains_house",
+  "loot_table": "lootintegrations:chests/village",
   "max_result_itemcount": 12,
   "integrated_loot_tables": {
     "dungeons_arise:chests/bandit_village/bandit_village_normal": 6,
