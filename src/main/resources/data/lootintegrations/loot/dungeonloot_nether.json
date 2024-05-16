@@ -1,5 +1,5 @@
 {
-  "loot_table": "minecraft:chests/nether_bridge",
+  "loot_table": "lootintegrations:chests/nether",
   "max_result_itemcount": 12,
   "integrated_loot_tables": {
     "dungeons_plus:chests/soul_prison/common": 6,
