@@ -1,0 +1,39 @@
+{
+  "pools": [
+    {
+      "rolls": 10,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/ruined_portal",
+          "weight": 7
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/nether_bridge",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/bastion_treasure",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/bastion_other",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/bastion_hoglin_stable",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/bastion_bridge",
+          "weight": 2
+        }
+      ]
+    }
+  ]
+}
