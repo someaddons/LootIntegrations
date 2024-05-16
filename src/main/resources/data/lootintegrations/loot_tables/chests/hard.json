@@ -1,0 +1,29 @@
+{
+  "pools": [
+    {
+      "rolls": 10,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/stronghold_crossing",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/woodland_mansion",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/ancient_city",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "minecraft:chests/end_city_treasure",
+          "weight": 15
+        }
+      ]
+    }
+  ]
+}
