@@ -4,8 +4,8 @@ import com.lootintegrations.LootintegrationsMod;
 import com.lootintegrations.loot.LootModifierManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -26,7 +26,7 @@ public class EventHandler
     @SubscribeEvent
     public static void playerClickBlockEvent(final PlayerInteractEvent.RightClickBlock event)
     {
-        if (!LootintegrationsMod.config.getCommonConfig().showcontainerloottable || event.getLevel().isClientSide())
+        if (!LootintegrationsMod.config.getCommonConfig().showcontainerloottable || event.getEntity().level.isClientSide())
         {
             return;
         }
@@ -35,9 +35,9 @@ public class EventHandler
         if (te instanceof RandomizableContainerBlockEntity && ((RandomizableContainerBlockEntity) te).lootTable != null)
         {
             event.getEntity()
-                    .sendSystemMessage(Component.literal("[Loottable: " + ((RandomizableContainerBlockEntity) te).lootTable + "]").setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
-                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,
-                                    ((RandomizableContainerBlockEntity) te).lootTable.toString()))));
+              .sendMessage(new TextComponent("[Loottable: " + ((RandomizableContainerBlockEntity) te).lootTable + "]").setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
+                .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,
+                  ((RandomizableContainerBlockEntity) te).lootTable.toString()))), event.getEntity().getUUID());
         }
     }
 }
