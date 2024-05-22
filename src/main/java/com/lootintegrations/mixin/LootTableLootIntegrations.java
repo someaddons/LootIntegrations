@@ -14,7 +14,7 @@ import java.util.List;
 @Mixin(LootTable.class)
 public class LootTableLootIntegrations
 {
-    @Inject(method = "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;", at = @At("RETURN"))
+    @Inject(method = "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;)Ljava/util/List;", at = @At("RETURN"))
     public void on(final LootContext context, final CallbackInfoReturnable<List<ItemStack>> cir)
     {
         LootModifierManager.applyTo(context, cir.getReturnValue(), (LootTable) (Object) this);

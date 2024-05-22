@@ -4,8 +4,8 @@ import com.lootintegrations.LootintegrationsMod;
 import com.lootintegrations.loot.IChestLoottable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.world.InteractionHand;
@@ -36,9 +36,9 @@ public class PlayerInteractMixin
             if (te instanceof IChestLoottable && ((IChestLoottable) te).getLoottable() != null)
             {
                 serverPlayer
-                  .sendSystemMessage(Component.literal("[Loottable: " + ((IChestLoottable) te).getLoottable() + "]").setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
+                  .sendMessage(new TextComponent("[Loottable: " + ((IChestLoottable) te).getLoottable() + "]").setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
                     .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,
-                      ((IChestLoottable) te).getLoottable().toString()))));
+                      ((IChestLoottable) te).getLoottable().toString()))), serverPlayer.getUUID());
             }
         }
     }
