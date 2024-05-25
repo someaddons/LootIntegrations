@@ -53,13 +53,13 @@ Integrates items from loottables into other loottables for intermod loot compati
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.19,1.20)"
+    versionRange="[1.18,1.19)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.lootintegrations]]
     modId="cupboard"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
-    versionRange="[1.19.2-1.5,)"
+    versionRange="[1.18.2-1.5,)"
     ordering="NONE"
     side="BOTH"
