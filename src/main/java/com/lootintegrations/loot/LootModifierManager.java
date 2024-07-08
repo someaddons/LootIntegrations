@@ -46,7 +46,7 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener implem
 
         applying = true;
         // apply modifiers
-        List<GlobalLootModifierIntegration> modifiers = lootOptionsMap.get(((ILootTableID) lootTable).getID());
+        List<GlobalLootModifierIntegration> modifiers = lootOptionsMap.get(LootintegrationsMod.getLootTableId(lootTable, context.getLevel().getServer()));
         if (modifiers != null && !modifiers.isEmpty())
         {
             for (final GlobalLootModifierIntegration modifier : modifiers)
@@ -89,6 +89,6 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener implem
     @Override
     public ResourceLocation getFabricId()
     {
-        return new ResourceLocation(LootintegrationsMod.MODID, "lootintegrationreloadlistener");
+        return ResourceLocation.tryBuild(LootintegrationsMod.MODID, "lootintegrationreloadlistener");
     }
 }

@@ -1,7 +1,6 @@
 package com.lootintegrations.mixin;
 
 import com.lootintegrations.LootintegrationsMod;
-import com.lootintegrations.loot.IChestLoottable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -13,6 +12,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,12 +33,13 @@ public class PlayerInteractMixin
         if (LootintegrationsMod.config.getCommonConfig().showcontainerloottable)
         {
             final BlockEntity te = level.getBlockEntity(blockHitResult.getBlockPos());
-            if (te instanceof IChestLoottable && ((IChestLoottable) te).getLoottable() != null)
+            if (te instanceof RandomizableContainerBlockEntity && ((RandomizableContainerBlockEntity) te).getLootTable() != null)
             {
                 serverPlayer
-                  .sendSystemMessage(Component.literal("[Loottable: " + ((IChestLoottable) te).getLoottable() + "]").setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
+                  .sendSystemMessage(Component.literal("[Loottable: " + ((RandomizableContainerBlockEntity) te).getLootTable().location() + "]")
+                                       .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
                     .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,
-                      ((IChestLoottable) te).getLoottable().toString()))));
+                      ((RandomizableContainerBlockEntity) te).getLootTable().location().toString()))));
             }
         }
     }

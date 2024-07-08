@@ -3,7 +3,7 @@ package com.lootintegrations.loot;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lootintegrations.LootintegrationsMod;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.lootintegrations.LootintegrationsMod.getLootTableId;
 
 public class GlobalLootModifierIntegration
 {
@@ -44,7 +46,7 @@ public class GlobalLootModifierIntegration
         List<ItemStack> extraItems = new ArrayList<>();
         try
         {
-            extraItems = context.getLevel().getServer().getLootData().getLootTable(lootTableId).getRandomItems(context);
+            extraItems = context.getLevel().getServer().reloadableRegistries().get().registry(Registries.LOOT_TABLE).get().get(lootTableId).getRandomItems(context);
         }
         catch (Exception e)
         {
@@ -54,7 +56,7 @@ public class GlobalLootModifierIntegration
 
         if (LootintegrationsMod.config.getCommonConfig().debugOutput)
         {
-            LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + "from: " + lootTableId + " caused by:" + location);
+            LootintegrationsMod.LOGGER.info("Adding loot to: " + getLootTableId(lootTable, context.getLevel().getServer()) + "from: " + lootTableId + " caused by:" + location);
         }
 
         if (extraItems.isEmpty())
@@ -62,7 +64,7 @@ public class GlobalLootModifierIntegration
             return;
         }
 
-        int itemCount = integratedTables.getOrDefault(((ILootTableID) lootTable).getID(), 1);
+        int itemCount = integratedTables.getOrDefault(getLootTableId(lootTable, context.getLevel().getServer()), 1);
         extraItems = aggregateStacks(extraItems);
 
         if (!generatedLoot.isEmpty() && (generatedLoot.size() + itemCount) > fillSize)
@@ -86,7 +88,7 @@ public class GlobalLootModifierIntegration
             generatedLoot.add(stack);
             if (LootintegrationsMod.config.getCommonConfig().debugOutput)
             {
-                LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + " item:" + stack.toString());
+                LootintegrationsMod.LOGGER.info("Adding loot to: " + getLootTableId(lootTable, context.getLevel().getServer()) + " item:" + stack.toString());
             }
 
             if (extraItems.isEmpty())
@@ -114,7 +116,7 @@ public class GlobalLootModifierIntegration
             }
             else
             {
-                if (compareItemStacksIgnoreStackSize(stack, contained, false, true))
+                if (ItemStack.isSameItemSameComponents(stack, contained))
                 {
                     contained.setCount(Math.min(contained.getCount() + stack.getCount(), Math.max(1, contained.getMaxStackSize() / 2)));
                 }
@@ -140,7 +142,7 @@ public class GlobalLootModifierIntegration
 
         JsonObject jsonData = (JsonObject) data;
 
-        modifier.lootTableId = new ResourceLocation(jsonData.get(LOOT_TABLE_ID).getAsString());
+        modifier.lootTableId = ResourceLocation.tryParse(jsonData.get(LOOT_TABLE_ID).getAsString());
 
         LootintegrationsMod.LOGGER.info("Parsing loot modifiers for:" + location + " with loottable: " + modifier.lootTableId);
 
@@ -152,7 +154,7 @@ public class GlobalLootModifierIntegration
         final Map<ResourceLocation, Integer> integratedTables = new HashMap<>();
         for (final Map.Entry<String, JsonElement> element : jsonData.get(INTEGRATED_LOOT_TABLES).getAsJsonObject().entrySet())
         {
-            final ResourceLocation integratedTable = new ResourceLocation(element.getKey());
+            final ResourceLocation integratedTable = ResourceLocation.tryParse(element.getKey());
             integratedTables.put(integratedTable, element.getValue().getAsInt());
         }
 
@@ -161,69 +163,4 @@ public class GlobalLootModifierIntegration
         return modifier;
     }
 
-    /**
-     * Compares two stacks ignoring count
-     *
-     * @param itemStack1
-     * @param itemStack2
-     * @param matchDamage
-     * @param matchNBT
-     * @return
-     */
-    public static boolean compareItemStacksIgnoreStackSize(
-      final ItemStack itemStack1,
-      final ItemStack itemStack2,
-      final boolean matchDamage,
-      final boolean matchNBT)
-    {
-        if (itemStack1.isEmpty() && itemStack2.isEmpty())
-        {
-            return true;
-        }
-
-        if (itemStack1.isEmpty() && !itemStack2.isEmpty()
-              || !itemStack1.isEmpty() && itemStack2.isEmpty())
-        {
-            return false;
-        }
-
-        if (itemStack1 == itemStack2)
-        {
-            return true;
-        }
-
-        if (!matchDamage || itemStack1.getDamageValue() == itemStack2.getDamageValue())
-        {
-            if (!matchNBT)
-            {
-                return true;
-            }
-
-            if (itemStack1.hasTag() && itemStack2.hasTag())
-            {
-                CompoundTag nbt1 = itemStack1.getTag();
-                CompoundTag nbt2 = itemStack2.getTag();
-
-                for (String key : nbt1.getAllKeys())
-                {
-                    if (!matchDamage && key.equals("Damage"))
-                    {
-                        continue;
-                    }
-                    if (!nbt2.contains(key) || !nbt1.get(key).equals(nbt2.get(key)))
-                    {
-                        return false;
-                    }
-                }
-
-                return nbt1.getAllKeys().size() == nbt2.getAllKeys().size();
-            }
-            else
-            {
-                return (!itemStack1.hasTag() || itemStack1.getTag().isEmpty())
-                         && (!itemStack2.hasTag() || itemStack2.getTag().isEmpty());
-            }
-        }
-        return false;
-    }
 }
