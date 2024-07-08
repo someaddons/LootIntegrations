@@ -43,7 +43,6 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
         }
 
         applying = true;
-
         // apply modifiers
         List<GlobalLootModifierIntegration> modifiers = lootOptionsMap.get(context.getQueriedLootTableId());
         if (modifiers != null && !modifiers.isEmpty())
@@ -66,6 +65,7 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
         {
             if (!entry.getKey().getNamespace().equals(LootintegrationsMod.MODID))
             {
+                LootintegrationsMod.LOGGER.warn("Ignoring loot modifiers for:" + entry.getKey() + " use this folder name:" + LootintegrationsMod.MODID);
                 continue;
             }
 
