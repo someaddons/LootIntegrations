@@ -46,7 +46,10 @@ public class GlobalLootModifierIntegration
         }
         catch (Exception e)
         {
-            LootintegrationsMod.LOGGER.debug("Loot generation of modifier:" + location + " for context failed for:" + lootTableId, e);
+            if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+            {
+                LootintegrationsMod.LOGGER.warn("Loot generation of modifier:" + location + " for context failed for:" + lootTableId, e);
+            }
             return;
         }
 
@@ -57,6 +60,10 @@ public class GlobalLootModifierIntegration
 
         if (extraItems.isEmpty())
         {
+            if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+            {
+                LootintegrationsMod.LOGGER.info("Could not generate items for loottable: " + context.getQueriedLootTableId());
+            }
             return;
         }
 

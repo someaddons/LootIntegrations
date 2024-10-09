@@ -5,22 +5,22 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:chests/pillager_outpost",
+          "value": "minecraft:chests/pillager_outpost",
           "weight": 5
         },
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:chests/desert_pyramid",
+          "value": "minecraft:chests/desert_pyramid",
           "weight": 10
         },
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:chests/abandoned_mineshaft",
+          "value": "minecraft:chests/abandoned_mineshaft",
           "weight": 7
         },
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:chests/simple_dungeon",
+          "value": "minecraft:chests/simple_dungeon",
           "weight": 9
         }
       ]

@@ -5,33 +5,33 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:chests/ruined_portal",
+          "value": "minecraft:chests/underwater_ruin_small",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:loot_table",
+          "value": "minecraft:chests/underwater_ruin_big",
           "weight": 7
         },
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:chests/nether_bridge",
-          "weight": 10
+          "value": "minecraft:chests/shipwreck_treasure",
+          "weight": 5
         },
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:chests/bastion_treasure",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:loot_table",
-          "name": "minecraft:chests/bastion_other",
+          "value": "minecraft:chests/shipwreck_supply",
           "weight": 2
         },
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:chests/bastion_hoglin_stable",
-          "weight": 3
+          "value": "minecraft:chests/shipwreck_map",
+          "weight": 2
         },
         {
           "type": "minecraft:loot_table",
-          "name": "minecraft:chests/bastion_bridge",
-          "weight": 2
+          "value": "minecraft:chests/buried_treasure",
+          "weight": 3
         }
       ]
     }
