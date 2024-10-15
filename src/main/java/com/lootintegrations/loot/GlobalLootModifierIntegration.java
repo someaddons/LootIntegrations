@@ -62,7 +62,7 @@ public class GlobalLootModifierIntegration
         {
             if (LootintegrationsMod.config.getCommonConfig().debugOutput)
             {
-                LootintegrationsMod.LOGGER.info("Could not generate items for loottable: " + context.getQueriedLootTableId());
+                LootintegrationsMod.LOGGER.info("Could not generate items for loottable: " + lootTableId);
             }
             return;
         }
