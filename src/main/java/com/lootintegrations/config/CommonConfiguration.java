@@ -7,6 +7,7 @@ public class CommonConfiguration implements ICommonConfig
 {
     public boolean showcontainerloottable = false;
     public boolean debugOutput            = false;
+    public boolean skipMapItems = true;
 
     public CommonConfiguration()
     {
@@ -22,6 +23,11 @@ public class CommonConfiguration implements ICommonConfig
         entry.addProperty("showcontainerloottable", showcontainerloottable);
         root.add("showcontainerloottable", entry);
 
+        final JsonObject entrentry3 = new JsonObject();
+        entrentry3.addProperty("desc:", "Skips map items during additional item generation, to avoid structure search lag (maps in the original chest still exist): default:true");
+        entrentry3.addProperty("skipMapItems", skipMapItems);
+        root.add("skipMapItems", entrentry3);
+
         final JsonObject entry2 = new JsonObject();
         entry2.addProperty("desc:", "Shows the added loot in the log if enabled: default:false");
         entry2.addProperty("debugOutput", debugOutput);
@@ -34,5 +40,6 @@ public class CommonConfiguration implements ICommonConfig
     {
         showcontainerloottable = data.get("showcontainerloottable").getAsJsonObject().get("showcontainerloottable").getAsBoolean();
         debugOutput = data.get("debugOutput").getAsJsonObject().get("debugOutput").getAsBoolean();
+        skipMapItems = data.get("skipMapItems").getAsJsonObject().get("skipMapItems").getAsBoolean();
     }
 }
