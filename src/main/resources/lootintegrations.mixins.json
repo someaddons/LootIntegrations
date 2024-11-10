@@ -4,6 +4,8 @@
   "compatibilityLevel": "JAVA_16",
   "refmap": "lootintegrations.refmap.json",
   "mixins": [
+    "ExplorationFunctionMixin",
+    "LootContextMixin",
     "LootTableLootIntegrations"
   ],
   "client": [

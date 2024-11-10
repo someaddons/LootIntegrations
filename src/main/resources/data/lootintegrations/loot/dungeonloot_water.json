@@ -1,8 +1,0 @@
-{
-  "loot_table": "lootintegrations:chests/water",
-  "max_result_itemcount": 12,
-  "integrated_loot_tables": {
-    "dungeons_plus:chests/warped_garden/common": 3,
-    "philipsruins:chests/ocean_ruins_loot": 4
-  }
-}
