@@ -45,6 +45,11 @@ public class GlobalLootModifierIntegration
         List<ItemStack> extraItems;
         try
         {
+            if (context instanceof INoMapContext noMapContext && LootintegrationsMod.config.getCommonConfig().skipMapItems)
+            {
+                noMapContext.disabledMaps();
+            }
+
             extraItems = ServerLifecycleHooks.getCurrentServer().getLootTables().get(lootTableId).getRandomItems(context);
         }
         catch (Exception e)
@@ -65,6 +70,11 @@ public class GlobalLootModifierIntegration
 
         int itemCount = integratedTables.getOrDefault(context.getQueriedLootTableId(), 1);
         extraItems = aggregateStacks(extraItems);
+
+        if (extraItems.isEmpty())
+        {
+            return;
+        }
 
         if (!generatedLoot.isEmpty() && (generatedLoot.size() + itemCount) > fillSize)
         {
@@ -109,6 +119,12 @@ public class GlobalLootModifierIntegration
         for (final ItemStack stack : stacksIn)
         {
             final ItemStack contained = aggregated.get(stack.getItem());
+
+            if (stack.isEmpty())
+            {
+                continue;
+            }
+
             if (contained == null)
             {
                 aggregated.put(stack.getItem(), stack);
