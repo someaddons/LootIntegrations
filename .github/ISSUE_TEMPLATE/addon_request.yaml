@@ -1,0 +1,14 @@
+name: Addon Request
+description: Request a compat addon for a mod
+title: "[Addon Request]: <Mod>"
+assignees:
+  - someaddons
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill in the mod name, preferable with a curseforge link
+  - type: textarea
+    id: mod
+    validations:
+      required: true
