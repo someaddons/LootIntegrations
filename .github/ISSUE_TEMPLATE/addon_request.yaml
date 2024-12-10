@@ -10,5 +10,6 @@ body:
         Fill in the mod name, preferable with a curseforge link
   - type: textarea
     id: mod
+    label: "Mod compat request"
     validations:
       required: true
