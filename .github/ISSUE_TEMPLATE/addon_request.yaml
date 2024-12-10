@@ -11,6 +11,6 @@ body:
   - type: textarea
     id: mod
     attributes:
-    label: "Mod compat request"
+      label: "Mod compat request"
     validations:
       required: true
