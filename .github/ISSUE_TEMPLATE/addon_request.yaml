@@ -6,10 +6,12 @@ assignees:
 body:
   - type: markdown
     attributes:
+    label: "Mod compat request"
       value: |
         Fill in the mod name, preferable with a curseforge link
   - type: textarea
     id: mod
+    attributes:
     label: "Mod compat request"
     validations:
       required: true
