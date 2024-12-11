@@ -6,9 +6,9 @@
     "ChestLoottableMixin",
     "ExplorationFunctionMixin",
     "LootContextMixin",
+    "LootdataManagerMixin",
     "LootTableLootIntegrations",
     "LootTableMixin",
-    "LoottablesLoadMixin",
     "PlayerInteractMixin"
   ],
   "client": [
