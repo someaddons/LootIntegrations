@@ -13,10 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LootModifierManager extends SimpleJsonResourceReloadListener implements IdentifiableResourceReloadListener
 {
@@ -28,7 +25,7 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener implem
         super(GSON, "loot");
     }
 
-    private static boolean applying = false;
+    private static Set<ResourceLocation> applying = new HashSet<>();
 
     /**
      * On loot fill we apply modifiers
@@ -39,23 +36,33 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener implem
      */
     public static void applyTo(final LootContext context, final List<ItemStack> items, final LootTable lootTable)
     {
-        if (applying)
+        if (lootTable == null)
         {
             return;
         }
 
-        applying = true;
+        final ResourceLocation lootTableID = LootintegrationsMod.getLootTableId(lootTable, context.getLevel().getServer());
+        if (lootTableID == null)
+        {
+            return;
+        }
+
+        if (applying.contains(lootTableID))
+        {
+            return;
+        }
+
         // apply modifiers
-        List<GlobalLootModifierIntegration> modifiers = lootOptionsMap.get(LootintegrationsMod.getLootTableId(lootTable, context.getLevel().getServer()));
+        List<GlobalLootModifierIntegration> modifiers = lootOptionsMap.get(lootTableID);
         if (modifiers != null && !modifiers.isEmpty())
         {
+            applying.add(lootTableID);
             for (final GlobalLootModifierIntegration modifier : modifiers)
             {
                 modifier.doApply(items, context, lootTable);
             }
+            applying.remove(lootTableID);
         }
-
-        applying = false;
     }
 
     @Override
