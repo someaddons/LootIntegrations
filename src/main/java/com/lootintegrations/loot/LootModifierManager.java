@@ -21,7 +21,7 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
 {
     public static final  Map<ResourceLocation, List<GlobalLootModifierIntegration>> lootOptionsMap = new HashMap<>();
     private static final Gson         GSON             = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-    public static final  TagKey<Item> IGNORED_FOR_LOOT = ItemTags.create(new ResourceLocation("lootintegrations:ignored"));
+    public static final TagKey<Item> IGNORED_FOR_LOOT = ItemTags.create(ResourceLocation.tryParse("lootintegrations:ignored"));
 
     public LootModifierManager()
     {
