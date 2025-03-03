@@ -8,11 +8,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.lootintegrations.LootintegrationsMod.getLootTableId;
 
 public class GlobalLootModifierIntegration
 {
@@ -36,8 +39,9 @@ public class GlobalLootModifierIntegration
      *
      * @param generatedLoot
      * @param context
+     * @param lootTable
      */
-    public void doApply(final List<ItemStack> generatedLoot, final LootContext context)
+    public void doApply(final List<ItemStack> generatedLoot, final LootContext context, final LootTable lootTable)
     {
         List<ItemStack> extraItems = new ArrayList<>();
         try
@@ -60,7 +64,7 @@ public class GlobalLootModifierIntegration
 
         if (LootintegrationsMod.config.getCommonConfig().debugOutput)
         {
-            LootintegrationsMod.LOGGER.info("Adding loot to: " + context.getQueriedLootTableId() + "from: " + lootTableId + " caused by:" + location);
+            LootintegrationsMod.LOGGER.info("Adding loot to: " + getLootTableId(lootTable, context.getLevel().getServer()) + "from: " + lootTableId + " caused by:" + location);
         }
 
         if (extraItems.isEmpty())
@@ -72,7 +76,7 @@ public class GlobalLootModifierIntegration
             return;
         }
 
-        int itemCount = integratedTables.getOrDefault(context.getQueriedLootTableId(), 1);
+        int itemCount = integratedTables.getOrDefault(getLootTableId(lootTable, context.getLevel().getServer()), 1);
         extraItems = aggregateStacks(extraItems);
 
         if (extraItems.isEmpty())
@@ -101,7 +105,7 @@ public class GlobalLootModifierIntegration
             generatedLoot.add(stack);
             if (LootintegrationsMod.config.getCommonConfig().debugOutput)
             {
-                LootintegrationsMod.LOGGER.info("Adding loot to: " + context.getQueriedLootTableId() + " item:" + stack.toString());
+                LootintegrationsMod.LOGGER.info("Adding loot to: " + getLootTableId(lootTable, context.getLevel().getServer()) + " item:" + stack.toString());
             }
 
             if (extraItems.isEmpty())

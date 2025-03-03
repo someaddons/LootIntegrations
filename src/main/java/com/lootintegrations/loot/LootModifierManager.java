@@ -10,11 +10,9 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LootModifierManager extends SimpleJsonResourceReloadListener
 {
@@ -26,7 +24,7 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
         super(GSON, "loot");
     }
 
-    private static boolean applying = false;
+    private static Set<ResourceLocation> applying = new HashSet<>();
 
     /**
      * On loot fill we apply modifiers
@@ -35,25 +33,35 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
      * @param items
      * @return
      */
-    public static void applyTo(final LootContext context, final List<ItemStack> items)
+    public static void applyTo(final LootContext context, final List<ItemStack> items, final LootTable lootTable)
     {
-        if (applying)
+        if (lootTable == null)
         {
             return;
         }
 
-        applying = true;
-        // apply modifiers
-        List<GlobalLootModifierIntegration> modifiers = lootOptionsMap.get(context.getQueriedLootTableId());
-        if (modifiers != null && !modifiers.isEmpty())
+        final ResourceLocation lootTableID = LootintegrationsMod.getLootTableId(lootTable, context.getLevel().getServer());
+        if (lootTableID == null)
         {
-            for (final GlobalLootModifierIntegration modifier : modifiers)
-            {
-                modifier.doApply(items, context);
-            }
+            return;
         }
 
-        applying = false;
+        if (applying.contains(lootTableID))
+        {
+            return;
+        }
+
+        // apply modifiers
+        List<GlobalLootModifierIntegration> modifiers = lootOptionsMap.get(lootTableID);
+        if (modifiers != null && !modifiers.isEmpty())
+        {
+            applying.add(lootTableID);
+            for (final GlobalLootModifierIntegration modifier : modifiers)
+            {
+                modifier.doApply(items, context, lootTable);
+            }
+            applying.remove(lootTableID);
+        }
     }
 
     @Override
