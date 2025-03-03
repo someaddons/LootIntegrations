@@ -59,11 +59,15 @@ public class GlobalLootModifierIntegration
 
         if (LootintegrationsMod.config.getCommonConfig().debugOutput)
         {
-            LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + "from: " + lootTableId + " caused by:" + location);
+            LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + " from: " + lootTableId + " caused by:" + location);
         }
 
         if (extraItems.isEmpty())
         {
+            if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+            {
+                LootintegrationsMod.LOGGER.info("Zero items generated from " + lootTableId + ", recheck the lootable and its path");
+            }
             return;
         }
 
