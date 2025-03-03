@@ -8,8 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,11 +37,11 @@ public class GlobalLootModifierIntegration
      *
      * @param generatedLoot
      * @param context
+     * @param lootTable
      */
-    @Nonnull
-    public void doApply(final List<ItemStack> generatedLoot, final LootContext context)
+    public void doApply(final List<ItemStack> generatedLoot, final LootContext context, final LootTable lootTable)
     {
-        List<ItemStack> extraItems;
+        List<ItemStack> extraItems = new ArrayList<>();
         try
         {
             if (context instanceof INoMapContext noMapContext && LootintegrationsMod.config.getCommonConfig().skipMapItems)
@@ -59,15 +59,19 @@ public class GlobalLootModifierIntegration
 
         if (LootintegrationsMod.config.getCommonConfig().debugOutput)
         {
-            LootintegrationsMod.LOGGER.info("Adding loot to: " + context.getQueriedLootTableId() + "from: " + lootTableId + " caused by:" + location);
+            LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + " from: " + lootTableId + " caused by:" + location);
         }
 
         if (extraItems.isEmpty())
         {
+            if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+            {
+                LootintegrationsMod.LOGGER.info("Zero items generated from " + lootTableId + ", recheck the lootable and its path");
+            }
             return;
         }
 
-        int itemCount = integratedTables.getOrDefault(context.getQueriedLootTableId(), 1);
+        int itemCount = integratedTables.getOrDefault(((ILootTableID) lootTable).getID(), 1);
         extraItems = aggregateStacks(extraItems);
 
         if (extraItems.isEmpty())
@@ -96,7 +100,7 @@ public class GlobalLootModifierIntegration
             generatedLoot.add(stack);
             if (LootintegrationsMod.config.getCommonConfig().debugOutput)
             {
-                LootintegrationsMod.LOGGER.info("Adding loot to: " + context.getQueriedLootTableId() + " item:" + stack.toString());
+                LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + " item:" + stack.toString());
             }
 
             if (extraItems.isEmpty())

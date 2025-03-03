@@ -6,7 +6,9 @@
   "mixins": [
     "ExplorationFunctionMixin",
     "LootContextMixin",
-    "LootTableLootIntegrations"
+    "LootdataManagerMixin",
+    "LootTableLootIntegrations",
+    "LootTableMixin"
   ],
   "client": [
   ],

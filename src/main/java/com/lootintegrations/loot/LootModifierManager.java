@@ -10,6 +10,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
      * @param items
      * @return
      */
-    public static void applyTo(final LootContext context, final List<ItemStack> items)
+    public static void applyTo(final LootContext context, final List<ItemStack> items, final LootTable lootTable)
     {
         if (applying)
         {
@@ -43,14 +44,13 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
         }
 
         applying = true;
-
         // apply modifiers
-        List<GlobalLootModifierIntegration> modifiers = lootOptionsMap.get(context.getQueriedLootTableId());
+        List<GlobalLootModifierIntegration> modifiers = lootOptionsMap.get(((ILootTableID) lootTable).getID());
         if (modifiers != null && !modifiers.isEmpty())
         {
             for (final GlobalLootModifierIntegration modifier : modifiers)
             {
-                modifier.doApply(items, context);
+                modifier.doApply(items, context, lootTable);
             }
         }
 
@@ -66,6 +66,7 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
         {
             if (!entry.getKey().getNamespace().equals(LootintegrationsMod.MODID))
             {
+                LootintegrationsMod.LOGGER.warn("Ignoring loot modifiers for:" + entry.getKey() + " use this folder name:" + LootintegrationsMod.MODID);
                 continue;
             }
 
