@@ -128,7 +128,7 @@ public class GlobalLootModifierIntegration
         {
             final ItemStack contained = aggregated.get(stack.getItem());
 
-            if (stack.isEmpty())
+            if (stack.isEmpty() || stack.is(LootModifierManager.IGNORED_FOR_LOOT))
             {
                 continue;
             }
