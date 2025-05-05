@@ -8,6 +8,7 @@ public class CommonConfiguration implements ICommonConfig
     public boolean showcontainerloottable = false;
     public boolean debugOutput            = false;
     public boolean skipMapItems = true;
+    public boolean skipExistingItems = true;
 
     public CommonConfiguration()
     {
@@ -27,6 +28,11 @@ public class CommonConfiguration implements ICommonConfig
         entrentry3.addProperty("desc:", "Skips map items during additional item generation, to avoid structure search lag (maps in the original chest still exist): default:true");
         entrentry3.addProperty("skipMapItems", skipMapItems);
         root.add("skipMapItems", entrentry3);
+
+        final JsonObject entry4 = new JsonObject();
+        entry4.addProperty("desc:", "Skips adding items already present in the loot, to avoid stacking additional items default:true");
+        entry4.addProperty("skipMapItems", skipMapItems);
+        root.add("skipMapItems", entry4);
 
         final JsonObject entry2 = new JsonObject();
         entry2.addProperty("desc:", "Shows the added loot in the log if enabled: default:false");
