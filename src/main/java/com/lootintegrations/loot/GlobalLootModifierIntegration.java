@@ -97,10 +97,32 @@ public class GlobalLootModifierIntegration
         for (int i = 0; i < itemCount; i++)
         {
             final ItemStack stack = extraItems.remove(LootintegrationsMod.rand.nextInt(extraItems.size()));
-            generatedLoot.add(stack);
-            if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+
+            boolean sameItem = false;
+
+            if (LootintegrationsMod.config.getCommonConfig().skipExistingItems)
             {
-                LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + " item:" + stack.toString());
+                for (int j = 0; j < generatedLoot.size(); j++)
+                {
+                    if (ItemStack.isSameItemSameTags(generatedLoot.get(j), stack))
+                    {
+                        sameItem = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!sameItem)
+            {
+                generatedLoot.add(stack);
+                if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+                {
+                    LootintegrationsMod.LOGGER.info("Adding loot to: " + ((ILootTableID) lootTable).getID() + " item:" + stack.toString());
+                }
+            }
+            else
+            {
+                i--;
             }
 
             if (extraItems.isEmpty())
