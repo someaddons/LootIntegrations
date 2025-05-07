@@ -6,10 +6,12 @@ import com.google.gson.JsonElement;
 import com.lootintegrations.LootintegrationsMod;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +20,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 
 import java.util.*;
 
-public class LootModifierManager extends SimpleJsonResourceReloadListener implements IdentifiableResourceReloadListener
+public class LootModifierManager extends SimpleJsonResourceReloadListener<JsonElement> implements IdentifiableResourceReloadListener
 {
     public static final  Map<ResourceLocation, List<GlobalLootModifierIntegration>> lootOptionsMap = new HashMap<>();
     private static final Gson         GSON             = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -26,7 +28,7 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener implem
 
     public LootModifierManager()
     {
-        super(GSON, "loot");
+        super(ExtraCodecs.JSON, FileToIdConverter.json("loot"));
     }
 
     private static Set<ResourceLocation> applying = new HashSet<>();

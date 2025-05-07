@@ -3,6 +3,7 @@ package com.lootintegrations.loot;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lootintegrations.LootintegrationsMod;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -51,7 +52,10 @@ public class GlobalLootModifierIntegration
                 noMapContext.disabledMaps();
             }
 
-            extraItems = context.getLevel().getServer().reloadableRegistries().get().registry(Registries.LOOT_TABLE).get().get(lootTableId).getRandomItems(context);
+            extraItems = ((Registry<LootTable>) context.getLevel().getServer().reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).get(lootTableId)
+                .get()
+                .value()
+                .getRandomItems(context);
         }
         catch (Exception e)
         {

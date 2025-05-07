@@ -5,6 +5,7 @@ import com.lootintegrations.config.CommonConfiguration;
 import com.lootintegrations.loot.LootModifierManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -37,6 +38,6 @@ public class LootintegrationsMod implements ModInitializer
 
     public static ResourceLocation getLootTableId(final LootTable table, final MinecraftServer server)
     {
-        return server.reloadableRegistries().get().registry(Registries.LOOT_TABLE).get().getKey(table);
+        return ((Registry) server.reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).getKey(table);
     }
 }

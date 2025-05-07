@@ -17,6 +17,9 @@ public class LootTableLootIntegrations
     @Inject(method = "getRandomItems(Lnet/minecraft/world/level/storage/loot/LootContext;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;", at = @At("RETURN"))
     public void on(final LootContext context, final CallbackInfoReturnable<List<ItemStack>> cir)
     {
-        LootModifierManager.applyTo(context, cir.getReturnValue(), (LootTable) (Object) this);
+        if (context.getLevel() != null)
+        {
+            LootModifierManager.applyTo(context, cir.getReturnValue(), (LootTable) (Object) this);
+        }
     }
 }
