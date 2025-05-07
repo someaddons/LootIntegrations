@@ -39,8 +39,7 @@ public class EventHandler
             ((ServerPlayer)event.getEntity())
               .sendSystemMessage(Component.literal("[Loottable: " + ((RandomizableContainerBlockEntity) te).getLootTable().location() + "]")
                                    .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
-                                               .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,
-                                                 ((RandomizableContainerBlockEntity) te).getLootTable().location().toString()))));
+                                               .withClickEvent(new ClickEvent.CopyToClipboard(((RandomizableContainerBlockEntity) te).getLootTable().location().toString()))));
         }
     }
 }
