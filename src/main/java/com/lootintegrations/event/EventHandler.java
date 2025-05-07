@@ -6,10 +6,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 /**
@@ -18,9 +20,9 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 public class EventHandler
 {
     @SubscribeEvent
-    public static void onAddReloadListenerEvent(final AddReloadListenerEvent event)
+    public static void onAddReloadListenerEvent(final AddServerReloadListenersEvent event)
     {
-        event.addListener(new LootModifierManager());
+        event.addListener(ResourceLocation.fromNamespaceAndPath(LootintegrationsMod.MODID,"reloadlistener"),new LootModifierManager());
     }
 
     @SubscribeEvent
@@ -34,7 +36,7 @@ public class EventHandler
         final BlockEntity te = event.getEntity().level().getBlockEntity(event.getPos());
         if (te instanceof RandomizableContainerBlockEntity && ((RandomizableContainerBlockEntity) te).getLootTable() != null)
         {
-            event.getEntity()
+            ((ServerPlayer)event.getEntity())
               .sendSystemMessage(Component.literal("[Loottable: " + ((RandomizableContainerBlockEntity) te).getLootTable().location() + "]")
                                    .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
                                                .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,
