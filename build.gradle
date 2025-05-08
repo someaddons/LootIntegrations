@@ -81,10 +81,3 @@ publishing {
         }
     }
 }
-
-idea {
-    module {
-        downloadSources = true
-        downloadJavadoc = true
-    }
-}

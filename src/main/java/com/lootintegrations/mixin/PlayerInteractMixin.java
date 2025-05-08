@@ -36,10 +36,9 @@ public class PlayerInteractMixin
             if (te instanceof RandomizableContainerBlockEntity && ((RandomizableContainerBlockEntity) te).getLootTable() != null)
             {
                 serverPlayer
-                  .sendSystemMessage(Component.literal("[Loottable: " + ((RandomizableContainerBlockEntity) te).getLootTable().location() + "]")
-                                       .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
-                    .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD,
-                      ((RandomizableContainerBlockEntity) te).getLootTable().location().toString()))));
+                    .sendSystemMessage(Component.literal("[Loottable: " + ((RandomizableContainerBlockEntity) te).getLootTable().location() + "]")
+                        .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
+                            .withClickEvent(new ClickEvent.CopyToClipboard(((RandomizableContainerBlockEntity) te).getLootTable().location().toString()))));
             }
         }
     }
