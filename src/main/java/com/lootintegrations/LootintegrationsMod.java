@@ -40,4 +40,9 @@ public class LootintegrationsMod implements ModInitializer
     {
         return ((Registry) server.reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).getKey(table);
     }
+
+    public static ResourceLocation resFor(final String path)
+    {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    }
 }
