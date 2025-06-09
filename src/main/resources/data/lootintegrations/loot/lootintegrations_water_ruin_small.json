@@ -1,0 +1,7 @@
+{
+  "loot_table": "minecraft:chests/underwater_ruin_small",
+  "max_result_itemcount": 100,
+  "integrated_loot_tables": {
+    "lootintegrations:chests/water": 2
+  }
+}

@@ -35,4 +35,9 @@ public class LootintegrationsMod implements ModInitializer
     {
         ResourceManagerHelper.get(SERVER_DATA).registerReloadListener(new LootModifierManager());
     }
+
+    public static ResourceLocation resFor(final String path)
+    {
+        return new ResourceLocation(MODID, path);
+    }
 }
