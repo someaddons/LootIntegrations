@@ -4,8 +4,9 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:empty",
-          "weight": 2
+          "type": "minecraft:item",
+          "name": "minecraft:bone",
+          "weight": 1
         }
       ]
     }

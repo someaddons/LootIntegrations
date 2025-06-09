@@ -1,0 +1,7 @@
+{
+  "loot_table": "minecraft:chests/village/village_butcher",
+  "max_result_itemcount": 100,
+  "integrated_loot_tables": {
+    "lootintegrations:chests/village": 3
+  }
+}
