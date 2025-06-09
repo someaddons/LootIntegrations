@@ -52,7 +52,8 @@ public class GlobalLootModifierIntegration
         List<ItemStack> extraItems = new ArrayList<>();
         try
         {
-            if (context instanceof INoMapContext noMapContext && LootintegrationsMod.config.getCommonConfig().skipMapItems)
+            final LootContext generatingContext = new LootContext.Builder(context).withQueriedLootTableId(lootTableId).create(Optional.empty());
+            if (generatingContext instanceof INoMapContext noMapContext && LootintegrationsMod.config.getCommonConfig().skipMapItems)
             {
                 noMapContext.disabledMaps();
             }
@@ -60,7 +61,7 @@ public class GlobalLootModifierIntegration
             extraItems = ((Registry<LootTable>) context.getLevel().getServer().reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).get(lootTableId)
                 .get()
                 .value()
-                .getRandomItems(new LootContext.Builder(context).withQueriedLootTableId(lootTableId).create(Optional.empty()));
+                .getRandomItems(generatingContext);
         }
         catch (Exception e)
         {
