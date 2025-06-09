@@ -23,6 +23,13 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 
+configurations.configureEach {
+    resolutionStrategy {
+        cacheDynamicVersionsFor 3000, 'days'
+        cacheChangingModulesFor 3000, 'days'
+    }
+}
+
 runs {
     // applies to all the run configs below
     configureEach {
@@ -93,6 +100,11 @@ configurations {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
     implementation "curse.maven:cupboard-326652:5477519"
+    implementation "curse.maven:mcol-245506:6611138"
+    implementation "curse.maven:blockui-522992:6553903"
+    implementation "curse.maven:do-527361:6335398"
+    implementation "curse.maven:struct-298744:6626327"
+    implementation "curse.maven:multipiston-303278:6515286"
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -43,4 +43,9 @@ public class LootintegrationsMod
     {
         return server.reloadableRegistries().get().registry(Registries.LOOT_TABLE).get().getKey(table);
     }
+
+    public static ResourceLocation resFor(final String path)
+    {
+        return ResourceLocation.fromNamespaceAndPath(MODID,path);
+    }
 }
