@@ -3,10 +3,8 @@ package com.lootintegrations.loot;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lootintegrations.LootintegrationsMod;
-import it.unimi.dsi.fastutil.ints.Int2ObjectAVLTreeMap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -53,12 +51,13 @@ public class GlobalLootModifierIntegration
         List<ItemStack> extraItems = new ArrayList<>();
         try
         {
-            if (context instanceof INoMapContext noMapContext && LootintegrationsMod.config.getCommonConfig().skipMapItems)
+            final LootContext generatingContext = new LootContext.Builder(context).withQueriedLootTableId(lootTableId).create(Optional.empty());
+            if (generatingContext instanceof INoMapContext noMapContext && LootintegrationsMod.config.getCommonConfig().skipMapItems)
             {
                 noMapContext.disabledMaps();
             }
 
-            extraItems = context.getLevel().getServer().reloadableRegistries().get().registry(Registries.LOOT_TABLE).get().get(lootTableId).getRandomItems(new LootContext.Builder(context).withQueriedLootTableId(lootTableId).create(Optional.empty()));
+            extraItems = context.getLevel().getServer().reloadableRegistries().get().registry(Registries.LOOT_TABLE).get().get(lootTableId).getRandomItems(generatingContext);
         }
         catch (Exception e)
         {
