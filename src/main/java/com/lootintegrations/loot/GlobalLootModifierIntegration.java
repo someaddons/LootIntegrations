@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nonnull;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 
 public class GlobalLootModifierIntegration
 {
@@ -22,6 +24,14 @@ public class GlobalLootModifierIntegration
     public        ResourceLocation               lootTableId;
     public        Map<ResourceLocation, Integer> integratedTables = new HashMap<>();
     private       int                            fillSize         = 27;
+
+    private static final Set<ResourceLocation> inbuiltTables = Set.of(LootintegrationsMod.resFor("chests/easy"),
+        LootintegrationsMod.resFor("chests/medium"),
+        LootintegrationsMod.resFor("chests/hard"),
+        LootintegrationsMod.resFor("chests/nether"),
+        LootintegrationsMod.resFor("chests/water"),
+        LootintegrationsMod.resFor("chests/village"),
+        LootintegrationsMod.resFor("chests/empty"));
 
     /**
      * Constructs a LootModifier.
@@ -58,7 +68,7 @@ public class GlobalLootModifierIntegration
             return;
         }
 
-        if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+        if (LootintegrationsMod.config.getCommonConfig().debugOutput && !inbuiltTables.contains(lootTableId))
         {
             LootintegrationsMod.LOGGER.info("Adding loot to: " + context.getQueriedLootTableId() + "from: " + lootTableId + " caused by:" + location);
         }
@@ -69,7 +79,7 @@ public class GlobalLootModifierIntegration
         }
 
         int itemCount = integratedTables.getOrDefault(context.getQueriedLootTableId(), 1);
-        extraItems = aggregateStacks(extraItems);
+        extraItems = aggregateStacks(extraItems, false);
 
         if (extraItems.isEmpty())
         {
@@ -78,7 +88,7 @@ public class GlobalLootModifierIntegration
 
         if (!generatedLoot.isEmpty() && (generatedLoot.size() + itemCount) > fillSize)
         {
-            List<ItemStack> newList = aggregateStacks(generatedLoot);
+            List<ItemStack> newList = aggregateStacks(generatedLoot, true);
             generatedLoot.clear();
             generatedLoot.addAll(newList);
             if (generatedLoot.size() > fillSize)
@@ -91,13 +101,77 @@ public class GlobalLootModifierIntegration
             }
         }
 
+        if (itemCount == 0)
+        {
+            return;
+        }
+
+        int[] weights = new int[extraItems.size()];
+        int totalWeight = 0;
+
+        int size = extraItems.size();
+        for (int i = 0; i < size; i++)
+        {
+            int weight = calcWeightForStack(extraItems.get(i));
+            totalWeight += weight;
+            weights[i] = totalWeight;
+        }
+
         for (int i = 0; i < itemCount; i++)
         {
-            final ItemStack stack = extraItems.remove(LootintegrationsMod.rand.nextInt(extraItems.size()));
-            generatedLoot.add(stack);
-            if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+            if (totalWeight <= 0)
             {
-                LootintegrationsMod.LOGGER.info("Adding loot to: " + context.getQueriedLootTableId() + " item:" + stack.toString());
+                return;
+            }
+
+            int weight = LootintegrationsMod.rand.nextInt(totalWeight);
+            int index = -1;
+            int removedWeight = 0;
+            ItemStack stack = null;
+            for (int j = 0; j < size; j++)
+            {
+                if (index == -1 && weight < weights[j])
+                {
+                    index = j;
+                    weights[j] = 0;
+                    stack = extraItems.get(index);
+                    removedWeight = calcWeightForStack(stack);
+                    totalWeight -= removedWeight;
+                    continue;
+                }
+
+                if (index != -1)
+                {
+                    weights[j] -= removedWeight;
+                }
+            }
+
+            if (stack == null)
+            {
+                continue;
+            }
+
+            boolean sameItem = false;
+
+            if (LootintegrationsMod.config.getCommonConfig().skipExistingItems)
+            {
+                for (int j = 0; j < generatedLoot.size(); j++)
+                {
+                    if (ItemStack.isSameItemSameTags(generatedLoot.get(j), stack))
+                    {
+                        sameItem = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!sameItem)
+            {
+                generatedLoot.add(stack);
+                if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+                {
+                    LootintegrationsMod.LOGGER.info("Adding loot to: " + context.getQueriedLootTableId() + " item:" + stack.toString());
+                }
             }
 
             if (extraItems.isEmpty())
@@ -108,12 +182,23 @@ public class GlobalLootModifierIntegration
     }
 
     /**
-     * Aggregates the itemstacks in a list together, by item. May remove different variants of the same
-     *
-     * @param stacksIn
+     * Determines the weight for a stack
+     * @param stack
      * @return
      */
-    private List<ItemStack> aggregateStacks(final List<ItemStack> stacksIn)
+    private int calcWeightForStack(final ItemStack stack)
+    {
+        return ForgeRegistries.ITEMS.getKey(stack.getItem()).getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
+    }
+
+    /**
+     * Aggregates the itemstacks in a list together, by item
+     *
+     * @param stacksIn
+     * @param originalLoot
+     * @return
+     */
+    private List<ItemStack> aggregateStacks(final List<ItemStack> stacksIn, final boolean originalLoot)
     {
         final Map<Item, ItemStack> aggregated = new HashMap<>();
         for (final ItemStack stack : stacksIn)

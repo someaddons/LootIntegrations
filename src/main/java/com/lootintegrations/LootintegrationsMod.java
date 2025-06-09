@@ -4,6 +4,7 @@ import com.cupboard.config.CupboardConfig;
 import com.lootintegrations.config.CommonConfiguration;
 import com.lootintegrations.event.ClientEventHandler;
 import com.lootintegrations.event.EventHandler;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -45,5 +46,10 @@ public class LootintegrationsMod
     private void setup(final FMLCommonSetupEvent event)
     {
         LOGGER.info(MODID + " mod initialized");
+    }
+
+    public static ResourceLocation resFor(final String path)
+    {
+        return new ResourceLocation(MODID, path);
     }
 }

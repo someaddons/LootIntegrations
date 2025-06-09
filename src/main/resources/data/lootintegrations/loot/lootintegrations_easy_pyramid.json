@@ -1,0 +1,7 @@
+{
+  "loot_table": "minecraft:chests/desert_pyramid",
+  "max_result_itemcount": 100,
+  "integrated_loot_tables": {
+    "lootintegrations:chests/easy": 10
+  }
+}
