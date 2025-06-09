@@ -1,0 +1,7 @@
+{
+  "loot_table": "minecraft:chests/end_city_treasure",
+  "max_result_itemcount": 100,
+  "integrated_loot_tables": {
+    "lootintegrations:chests/hard": 15
+  }
+}

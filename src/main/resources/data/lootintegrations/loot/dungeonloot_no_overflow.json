@@ -1,6 +1,6 @@
 {
-  "loot_table": "minecraft:chests/simple_dungeon",
-  "max_result_itemcount": 12,
+  "loot_table": "lootintegrations:chests/empty",
+  "max_result_itemcount": 13,
   "integrated_loot_tables": {
     "minecraft:chests/simple_dungeon": 0,
     "minecraft:chests/abandoned_mineshaft": 0,

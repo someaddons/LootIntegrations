@@ -23,6 +23,13 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
 
+configurations.configureEach {
+    resolutionStrategy {
+        cacheDynamicVersionsFor 3000, 'days'
+        cacheChangingModulesFor 3000, 'days'
+    }
+}
+
 runs {
     // applies to all the run configs below
     configureEach {

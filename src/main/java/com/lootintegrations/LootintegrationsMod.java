@@ -3,7 +3,6 @@ package com.lootintegrations;
 import com.cupboard.config.CupboardConfig;
 import com.lootintegrations.config.CommonConfiguration;
 import com.lootintegrations.event.EventHandler;
-import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -44,5 +43,10 @@ public class LootintegrationsMod
     public static ResourceLocation getLootTableId(final LootTable table, final MinecraftServer server)
     {
         return ((Registry)server.reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).getKey(table);
+    }
+
+    public static ResourceLocation resFor(final String path)
+    {
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 }

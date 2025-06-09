@@ -11,10 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.lootintegrations.LootintegrationsMod.getLootTableId;
 
@@ -24,6 +21,14 @@ public class GlobalLootModifierIntegration
     public        ResourceLocation               lootTableId;
     public        Map<ResourceLocation, Integer> integratedTables = new HashMap<>();
     private       int                            fillSize         = 27;
+
+    private static final Set<ResourceLocation> inbuiltTables = Set.of(LootintegrationsMod.resFor("chests/easy"),
+        LootintegrationsMod.resFor("chests/medium"),
+        LootintegrationsMod.resFor("chests/hard"),
+        LootintegrationsMod.resFor("chests/nether"),
+        LootintegrationsMod.resFor("chests/water"),
+        LootintegrationsMod.resFor("chests/village"),
+        LootintegrationsMod.resFor("chests/empty"));
 
     /**
      * Constructs a LootModifier.
@@ -52,7 +57,10 @@ public class GlobalLootModifierIntegration
                 noMapContext.disabledMaps();
             }
 
-            extraItems = ((Registry<LootTable>)context.getLevel().getServer().reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).get(lootTableId).get().value().getRandomItems(context);
+            extraItems = ((Registry<LootTable>) context.getLevel().getServer().reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).get(lootTableId)
+                .get()
+                .value()
+                .getRandomItems(new LootContext.Builder(context).withQueriedLootTableId(lootTableId).create(Optional.empty()));
         }
         catch (Exception e)
         {
@@ -63,9 +71,9 @@ public class GlobalLootModifierIntegration
             return;
         }
 
-        if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+        if (LootintegrationsMod.config.getCommonConfig().debugOutput && !inbuiltTables.contains(lootTableId))
         {
-            LootintegrationsMod.LOGGER.info("Adding loot to: " + getLootTableId(lootTable, context.getLevel().getServer()) + "from: " + lootTableId + " caused by:" + location);
+            LootintegrationsMod.LOGGER.info("Adding loot to: " + getLootTableId(lootTable, context.getLevel().getServer()) + " from: " + lootTableId + " caused by:" + location);
         }
 
         if (extraItems.isEmpty())
@@ -78,7 +86,7 @@ public class GlobalLootModifierIntegration
         }
 
         int itemCount = integratedTables.getOrDefault(getLootTableId(lootTable, context.getLevel().getServer()), 1);
-        extraItems = aggregateStacks(extraItems);
+        extraItems = aggregateStacks(extraItems, false);
 
         if (extraItems.isEmpty())
         {
@@ -87,7 +95,7 @@ public class GlobalLootModifierIntegration
 
         if (!generatedLoot.isEmpty() && (generatedLoot.size() + itemCount) > fillSize)
         {
-            List<ItemStack> newList = aggregateStacks(generatedLoot);
+            List<ItemStack> newList = aggregateStacks(generatedLoot, true);
             generatedLoot.clear();
             generatedLoot.addAll(newList);
             if (generatedLoot.size() > fillSize)
@@ -100,9 +108,55 @@ public class GlobalLootModifierIntegration
             }
         }
 
+        if (itemCount == 0)
+        {
+            return;
+        }
+
+        int[] weights = new int[extraItems.size()];
+        int totalWeight = 0;
+
+        int size = extraItems.size();
+        for (int i = 0; i < size; i++)
+        {
+            int weight = calcWeightForStack(extraItems.get(i));
+            totalWeight += weight;
+            weights[i] = totalWeight;
+        }
+
         for (int i = 0; i < itemCount; i++)
         {
-            final ItemStack stack = extraItems.remove(LootintegrationsMod.rand.nextInt(extraItems.size()));
+            if (totalWeight <= 0)
+            {
+                return;
+            }
+
+            int weight = LootintegrationsMod.rand.nextInt(totalWeight);
+            int index = -1;
+            int removedWeight = 0;
+            ItemStack stack = null;
+            for (int j = 0; j < size; j++)
+            {
+                if (index == -1 && weight < weights[j])
+                {
+                    index = j;
+                    weights[j] = 0;
+                    stack = extraItems.get(index);
+                    removedWeight = calcWeightForStack(stack);
+                    totalWeight -= removedWeight;
+                    continue;
+                }
+
+                if (index != -1)
+                {
+                    weights[j] -= removedWeight;
+                }
+            }
+
+            if (stack == null)
+            {
+                continue;
+            }
 
             boolean sameItem = false;
 
@@ -139,19 +193,30 @@ public class GlobalLootModifierIntegration
     }
 
     /**
-     * Aggregates the itemstacks in a list together, by item. May remove different variants of the same
-     *
-     * @param stacksIn
+     * Determines the weight for a stack
+     * @param stack
      * @return
      */
-    private List<ItemStack> aggregateStacks(final List<ItemStack> stacksIn)
+    private int calcWeightForStack(final ItemStack stack)
+    {
+        return stack.getItemHolder().getKey().location().getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
+    }
+
+    /**
+     * Aggregates the itemstacks in a list together, by item
+     *
+     * @param stacksIn
+     * @param originalLoot
+     * @return
+     */
+    private List<ItemStack> aggregateStacks(final List<ItemStack> stacksIn, final boolean originalLoot)
     {
         final Map<Item, ItemStack> aggregated = new HashMap<>();
         for (final ItemStack stack : stacksIn)
         {
             final ItemStack contained = aggregated.get(stack.getItem());
 
-            if (stack.isEmpty() || stack.is(LootModifierManager.IGNORED_FOR_LOOT))
+            if (stack.isEmpty() || (!originalLoot && stack.is(LootModifierManager.IGNORED_FOR_LOOT)))
             {
                 continue;
             }
@@ -190,7 +255,10 @@ public class GlobalLootModifierIntegration
 
         modifier.lootTableId = ResourceLocation.tryParse(jsonData.get(LOOT_TABLE_ID).getAsString());
 
-        LootintegrationsMod.LOGGER.info("Parsing loot modifiers for:" + location + " with loottable: " + modifier.lootTableId);
+        if (LootintegrationsMod.config.getCommonConfig().debugOutput && location.getPath().contains("lootintegrations_"))
+        {
+            LootintegrationsMod.LOGGER.info("Parsing loot modifiers for:" + location + " with loottable: " + modifier.lootTableId);
+        }
 
         if (jsonData.has(MAX_RESULT_ITEMCOUNT))
         {
