@@ -3,6 +3,7 @@ package com.lootintegrations.loot;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lootintegrations.LootintegrationsMod;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -182,7 +183,7 @@ public class GlobalLootModifierIntegration
      */
     private int calcWeightForStack(final ItemStack stack)
     {
-        return stack.getItemHolder().unwrapKey().get().location().getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
+        return Registry.ITEM.getKey(stack.getItem()).getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
     }
 
     /**
