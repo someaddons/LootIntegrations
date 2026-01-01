@@ -1,11 +1,11 @@
 package com.lootintegrations.loot;
 
+import com.cupboard.util.ResourceLocation;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lootintegrations.LootintegrationsMod;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -200,7 +200,7 @@ public class GlobalLootModifierIntegration
      */
     private int calcWeightForStack(final ItemStack stack)
     {
-        return stack.getItemHolder().unwrapKey().get().location().getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
+        return stack.getItemHolder().unwrapKey().get().identifier().getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
     }
 
     /**

@@ -36,7 +36,7 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modImplementation("curse.maven:cupboard-326652:5477517")
+    modImplementation("curse.maven:cupboard-326652:7404066")
 
 }
 
@@ -66,11 +66,14 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-    archivesBaseName =  project.archives_base_name + "-fabric"
     withSourcesJar()
 
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
+}
+
+base {
+    archivesName = project.archives_base_name + "-fabric"
 }
 
 
