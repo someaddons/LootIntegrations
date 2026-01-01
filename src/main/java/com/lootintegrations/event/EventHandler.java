@@ -1,12 +1,12 @@
 package com.lootintegrations.event;
 
+import com.cupboard.util.ResourceLocation;
 import com.lootintegrations.LootintegrationsMod;
 import com.lootintegrations.loot.LootModifierManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
@@ -37,9 +37,9 @@ public class EventHandler
         if (te instanceof RandomizableContainerBlockEntity && ((RandomizableContainerBlockEntity) te).getLootTable() != null)
         {
             ((ServerPlayer)event.getEntity())
-              .sendSystemMessage(Component.literal("[Loottable: " + ((RandomizableContainerBlockEntity) te).getLootTable().location() + "]")
+                .sendSystemMessage(Component.literal("[Loottable: " + ((RandomizableContainerBlockEntity) te).getLootTable().identifier() + "]")
                                    .setStyle(Style.EMPTY.withColor(ChatFormatting.GOLD)
-                                               .withClickEvent(new ClickEvent.CopyToClipboard(((RandomizableContainerBlockEntity) te).getLootTable().location().toString()))));
+                                       .withClickEvent(new ClickEvent.CopyToClipboard(((RandomizableContainerBlockEntity) te).getLootTable().identifier().toString()))));
         }
     }
 }

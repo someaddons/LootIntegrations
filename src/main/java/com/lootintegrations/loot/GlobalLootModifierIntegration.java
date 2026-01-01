@@ -1,11 +1,11 @@
 package com.lootintegrations.loot;
 
+import com.cupboard.util.ResourceLocation;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lootintegrations.LootintegrationsMod;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -17,8 +17,8 @@ import static com.lootintegrations.LootintegrationsMod.getLootTableId;
 
 public class GlobalLootModifierIntegration
 {
-    private final ResourceLocation               location;
-    public        ResourceLocation               lootTableId;
+    private final ResourceLocation location;
+    public        ResourceLocation lootTableId;
     public        Map<ResourceLocation, Integer> integratedTables = new HashMap<>();
     private       int                            fillSize         = 27;
 
@@ -200,7 +200,7 @@ public class GlobalLootModifierIntegration
      */
     private int calcWeightForStack(final ItemStack stack)
     {
-        return stack.getItemHolder().getKey().location().getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
+        return stack.getItemHolder().getKey().identifier().getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
     }
 
     /**

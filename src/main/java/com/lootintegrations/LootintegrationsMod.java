@@ -1,11 +1,12 @@
 package com.lootintegrations;
 
 import com.cupboard.config.CupboardConfig;
+import com.cupboard.util.ResourceLocation;
 import com.lootintegrations.config.CommonConfiguration;
 import com.lootintegrations.event.EventHandler;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.bus.api.IEventBus;
@@ -42,7 +43,8 @@ public class LootintegrationsMod
 
     public static ResourceLocation getLootTableId(final LootTable table, final MinecraftServer server)
     {
-        return ((Registry)server.reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).getKey(table);
+        final Identifier id = ((Registry) server.reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).getKey(table);
+        return new ResourceLocation(id.getNamespace(), id.getPath());
     }
 
     public static ResourceLocation resFor(final String path)

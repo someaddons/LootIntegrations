@@ -1,11 +1,12 @@
 package com.lootintegrations.loot;
 
+import com.cupboard.util.ResourceLocation;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.lootintegrations.LootintegrationsMod;
 import net.minecraft.resources.FileToIdConverter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.ItemTags;
@@ -22,7 +23,7 @@ import java.util.*;
 public class LootModifierManager extends SimpleJsonResourceReloadListener<JsonElement>
 {
     public static final  Map<ResourceLocation, List<GlobalLootModifierIntegration>> lootOptionsMap = new HashMap<>();
-    private static final Gson         GSON             = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     public static final TagKey<Item> IGNORED_FOR_LOOT = ItemTags.create(ResourceLocation.tryParse("lootintegrations:ignored"));
 
     public LootModifierManager()
@@ -71,11 +72,10 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener<JsonEl
     }
 
     @Override
-    protected void apply(
-      final Map<ResourceLocation, JsonElement> resourceLocationJsonElementMap, final ResourceManager iResourceManager, final ProfilerFiller iProfiler)
+    protected void apply(final Map<Identifier, JsonElement> resourceLocationJsonElementMap, final ResourceManager iResourceManager, final ProfilerFiller profilerFiller)
     {
         lootOptionsMap.clear();
-        for (Map.Entry<ResourceLocation, JsonElement> entry : resourceLocationJsonElementMap.entrySet())
+        for (Map.Entry<Identifier, JsonElement> entry : resourceLocationJsonElementMap.entrySet())
         {
             if (!entry.getKey().getNamespace().equals(LootintegrationsMod.MODID))
             {
@@ -85,7 +85,8 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener<JsonEl
 
             try
             {
-                final GlobalLootModifierIntegration modifier = GlobalLootModifierIntegration.read(entry.getKey(), entry.getValue());
+                final GlobalLootModifierIntegration modifier =
+                    GlobalLootModifierIntegration.read(new ResourceLocation(entry.getKey().getNamespace(), entry.getKey().getPath()), entry.getValue());
                 for (final ResourceLocation integratedTable : modifier.integratedTables.keySet())
                 {
                     lootOptionsMap.computeIfAbsent(integratedTable, e -> new ArrayList<>()).add(modifier);
