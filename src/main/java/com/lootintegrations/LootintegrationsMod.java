@@ -44,6 +44,12 @@ public class LootintegrationsMod
     public static ResourceLocation getLootTableId(final LootTable table, final MinecraftServer server)
     {
         final Identifier id = ((Registry) server.reloadableRegistries().lookup().lookup(Registries.LOOT_TABLE).get()).getKey(table);
+
+        if (id == null)
+        {
+            return null;
+        }
+
         return new ResourceLocation(id.getNamespace(), id.getPath());
     }
 

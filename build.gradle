@@ -104,18 +104,17 @@ dependencies {
     implementation "curse.maven:cupboard-326652:7403564"
 }
 
+def loaderVersionRange = providers.gradleProperty("loader_version_range")
+def modVersion = providers.gradleProperty("mod_version")
+
 processResources {
-    inputs.properties([
-            loader_version_range: loader_version_range,
-            mod_id              : modid,
-            mod_version         : mod_version
-    ])
+    inputs.property("loader_version_range", loaderVersionRange)
+    inputs.property("mod_version", modVersion)
 
     filesMatching("META-INF/neoforge.mods.toml") {
         expand(
-                loader_version_range: loader_version_range,
-                mod_id: modid,
-                mod_version: mod_version
+                loader_version_range: loaderVersionRange.get(),
+                mod_version: modVersion.get()
         )
     }
 }
