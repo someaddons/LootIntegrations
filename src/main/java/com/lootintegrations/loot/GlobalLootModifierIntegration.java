@@ -200,7 +200,7 @@ public class GlobalLootModifierIntegration
      */
     private int calcWeightForStack(final ItemStack stack)
     {
-        return stack.getItemHolder().unwrapKey().get().identifier().getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
+        return stack.typeHolder().unwrapKey().get().identifier().getNamespace().equals("minecraft") ? 1 : LootintegrationsMod.config.getCommonConfig().moddedItemWeight + 1;
     }
 
     /**
