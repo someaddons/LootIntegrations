@@ -1,7 +1,6 @@
 {
   "required": false,
   "package": "com.lootintegrations.mixin",
-  "compatibilityLevel": "JAVA_16",
   "mixins": [
     "ChestLoottableMixin",
     "ExplorationFunctionMixin",
@@ -9,7 +8,8 @@
     "LootdataManagerMixin",
     "LootTableLootIntegrations",
     "LootTableMixin",
-    "PlayerInteractMixin"
+    "PlayerInteractMixin",
+    "ServerLevelMixin"
   ],
   "client": [
   ],

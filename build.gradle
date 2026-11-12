@@ -91,3 +91,16 @@ publishing {
         }
     }
 }
+
+def uploaderHome = System.getenv('CFUPLOAD_HOME') ?:
+        new File(System.getProperty('user.home'), '.cfupload').path
+def uploaderScript = new File(uploaderHome, 'gradle.gradle')
+if (uploaderScript.isFile()) {
+    apply from: uploaderScript
+}
+
+curseForgeUploader.putAll([
+        minecraftVersions: ['1.20.1'],
+        loaders          : ['Fabric'],
+        server           : true
+])
