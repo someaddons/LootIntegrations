@@ -20,6 +20,9 @@ public class GlobalLootModifierIntegration
     public        ResourceLocation               lootTableId;
     public        Map<ResourceLocation, Integer> integratedTables = new HashMap<>();
     private       int                            fillSize         = 27;
+    private long            lastLootCreation = 0;
+    private int             lootCounter      = 0;
+    private List<ItemStack> extraItems       = new ArrayList<>();
 
     private static final Set<ResourceLocation> inbuiltTables = Set.of(LootintegrationsMod.resFor("chests/easy"),
         LootintegrationsMod.resFor("chests/medium"),
@@ -48,25 +51,39 @@ public class GlobalLootModifierIntegration
      */
     public void doApply(final List<ItemStack> generatedLoot, final LootContext context, final LootTable lootTable)
     {
-        List<ItemStack> extraItems = new ArrayList<>();
-        try
+        final boolean repeatedLootCreation = context.getLevel().getGameTime() - lastLootCreation < 5;
+        if (!repeatedLootCreation)
         {
-            final LootContext generatingContext = new LootContext.Builder(context.params).create(Optional.empty());
-            if (context instanceof INoMapContext noMapContext && LootintegrationsMod.config.getCommonConfig().skipMapItems)
-            {
-                noMapContext.disabledMaps();
-            }
+            lootCounter = 0;
+            lastLootCreation = context.getLevel().getGameTime();
+        }
 
-            extraItems = context.getLevel().getServer().reloadableRegistries().get().registry(Registries.LOOT_TABLE).get().get(lootTableId).getRandomItems(generatingContext);
-        }
-        catch (Exception e)
+        if (!repeatedLootCreation || lootCounter < 2)
         {
-            if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+            try
             {
-                LootintegrationsMod.LOGGER.warn("Loot generation of modifier:" + location + " for context failed for:" + lootTableId, e);
+                final LootContext generatingContext = new LootContext.Builder(context.params).create(Optional.empty());
+                if (context instanceof INoMapContext noMapContext && LootintegrationsMod.config.getCommonConfig().skipMapItems)
+                {
+                    noMapContext.disabledMaps();
+                }
+                LootModifierManager.disableMapSearch = true;
+                extraItems = context.getLevel().getServer().reloadableRegistries().get().registry(Registries.LOOT_TABLE).get().get(lootTableId).getRandomItems(generatingContext);
+                LootModifierManager.disableMapSearch = false;
             }
-            return;
+            catch (Exception e)
+            {
+                if (LootintegrationsMod.config.getCommonConfig().debugOutput)
+                {
+                    LootintegrationsMod.LOGGER.warn("Loot generation of modifier:" + location + " for context failed for:" + lootTableId, e);
+                }
+                LootModifierManager.disableMapSearch = false;
+
+                return;
+            }
         }
+
+        lootCounter++;
 
         if (LootintegrationsMod.config.getCommonConfig().debugOutput && !inbuiltTables.contains(lootTableId))
         {
@@ -171,7 +188,7 @@ public class GlobalLootModifierIntegration
 
             if (!sameItem)
             {
-                generatedLoot.add(stack);
+                generatedLoot.add(stack.copy());
                 if (LootintegrationsMod.config.getCommonConfig().debugOutput)
                 {
                     LootintegrationsMod.LOGGER.info("Adding loot to: " + getLootTableId(lootTable, context.getLevel().getServer()) + " item:" + stack.toString());
