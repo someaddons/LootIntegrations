@@ -1,12 +1,12 @@
 {
   "required": false,
   "package": "com.lootintegrations.mixin",
-  "compatibilityLevel": "JAVA_16",
   "refmap": "lootintegrations.refmap.json",
   "mixins": [
     "ExplorationFunctionMixin",
     "LootContextMixin",
-    "LootTableLootIntegrations"
+    "LootTableLootIntegrations",
+    "ServerLevelMixin"
   ],
   "client": [
   ],

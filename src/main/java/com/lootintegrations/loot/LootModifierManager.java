@@ -31,6 +31,11 @@ public class LootModifierManager extends SimpleJsonResourceReloadListener
     private static Set<ResourceLocation> applying = new HashSet<>();
 
     /**
+     * Disables map search during loot generation
+     */
+    public static boolean disableMapSearch = false;
+
+    /**
      * On loot fill we apply modifiers
      *
      * @param context
