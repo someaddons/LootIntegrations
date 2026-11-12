@@ -1,12 +1,12 @@
 {
   "required": false,
   "package": "com.lootintegrations.mixin",
-  "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ExplorationFunctionMixin",
     "LootContextMixin",
     "LootTableLootIntegrations",
-    "PlayerInteractMixin"
+    "PlayerInteractMixin",
+    "ServerLevelMixin"
   ],
   "client": [
   ],

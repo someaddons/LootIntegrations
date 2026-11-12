@@ -92,3 +92,16 @@ publishing {
         // retrieving dependencies.
     }
 }
+
+def uploaderHome = System.getenv('CFUPLOAD_HOME') ?:
+        new File(System.getProperty('user.home'), '.cfupload').path
+def uploaderScript = new File(uploaderHome, 'gradle.gradle')
+if (uploaderScript.isFile()) {
+    apply from: uploaderScript
+}
+
+curseForgeUploader.putAll([
+        minecraftVersions: ['26.1', '26.1.1', '26.1.2', '26.2', '26.3'],
+        loaders          : ['Fabric'],
+        server           : true
+])
